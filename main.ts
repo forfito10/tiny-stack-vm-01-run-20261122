@@ -107,9 +107,10 @@ function execute(program: Buffer, input: Buffer): [Buffer, number] {
         sp -= 2; memory[a] = b;
         break;
       case 80: {
-        const bytes = Buffer.from(String(stack[sp - 1]));
-        if (out + bytes.length > output.length) return finish(11);
-        sp--; bytes.copy(output, out); out += bytes.length;
+        const text = String(stack[sp - 1]);
+        if (out + text.length > output.length) return finish(11);
+        sp--;
+        out += output.write(text, out, 'ascii');
         break;
       }
       case 81:
